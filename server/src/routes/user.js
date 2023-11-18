@@ -1,8 +1,12 @@
+const { validateValidationResult } = require('../middlewares/validateValidationResults');
+const { validateCreateUserFields } = require('../middlewares/validationFields');
+
 // importing requirements
 const router = require('express').Router();
 
+
 // Route 1: To create a new user: '/api/v1/users/' [using POST] (login not required)
-router.post('/', (req, res) => {
+router.post('/', validateCreateUserFields, validateValidationResult, (req, res) => {
     res.send("create new user");
 });
 
