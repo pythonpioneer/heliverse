@@ -1,5 +1,5 @@
 // importing all requirements
-// const User = require('../../models/User');
+const User = require('../../models/User');
 
 /**
  * find field/record in database
