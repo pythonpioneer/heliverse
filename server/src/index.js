@@ -19,9 +19,9 @@ app.use(express.json());
 app.use(cors());
 
 // available routes for API
-
+app.use(APIPATH + 'users', require('./routes/user.js'));
 
 // running the app
 app.listen(PORT, () => {
-    console.log(`TODO app listening on port http://localhost:${PORT}`);
+    console.log(`App listening on port http://localhost:${PORT}`);
 });
