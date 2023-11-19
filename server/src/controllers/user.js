@@ -89,7 +89,6 @@ const updateUser = async (req, res) => {
         }
         if (req.file) {  // user uploded the image
             toBeUpdated = true;
-            console.log(user.avatar.split('avatar_'))
             const imgPath = 'public/uploads/' + 'avatar_' + user.avatar.split('avatar_').at(-1);  // slicing the avatar url to fetch the path of the image
 
             // now, delete the old image
@@ -151,7 +150,35 @@ const fetchAllUsers = async (req, res) => {
 
         // send the user as response
         return res.status(200).json({ status: 200, message: "User Found!", user: data });
-        
+
+    } catch (err) {  // unrecogonized errors
+        return res.status(500).json({ status: 500, message: "Internal Server Error!" });
+    }
+};
+
+// delete the user
+const deleteUser = async (req, res) => {
+    try {
+        // fetch the user id from query param
+        const userId = req.params.id;
+
+        // check that the user exists or not
+        const user = await User.findById(userId);
+        if (!user) return res.status(404).json({ status: 404, message: "User not found!!" });
+
+        // now, delete the user avatar
+        const imgPath = 'public/uploads/' + 'avatar_' + user.avatar.split('avatar_').at(-1);  // slicing the avatar url to fetch the path of the image
+
+        // now, delete the old image
+        if (fs.existsSync(imgPath)) {  // Check if the file exists
+            // Delete the file
+            fs.unlinkSync(imgPath);
+        }
+
+        // now, delete the user
+        await User.findByIdAndDelete(userId);
+        return res.status(200).json({ status: 200, message: "User Deleted!!" });
+
     } catch (err) {  // unrecogonized errors
         return res.status(500).json({ status: 500, message: "Internal Server Error!" });
     }
@@ -159,4 +186,4 @@ const fetchAllUsers = async (req, res) => {
 
 
 // export all the controllers method
-module.exports = { createUser, updateUser, fetchSingleUser, fetchAllUsers };
+module.exports = { createUser, updateUser, fetchSingleUser, fetchAllUsers, deleteUser };
