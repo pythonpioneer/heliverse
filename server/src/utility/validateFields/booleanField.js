@@ -13,7 +13,7 @@ const validateBooleanOnly = (bools, isOptional) => {
     if (!Array.isArray(bools)) throw new Error('This method accepts input as an array only.');
 
     return bools.map(bool => {
-        const validationChain = check(bool).custom(flag => flag === true || flag === false).withMessage('This property only accepts boolean');
+        const validationChain = check(bool).custom(flag => flag === true || flag === false || flag === 'true' || flag === 'false').withMessage('This property only accepts boolean');
 
         if (isOptional) {  // if the given fields need to be optional
             validationChain.optional();

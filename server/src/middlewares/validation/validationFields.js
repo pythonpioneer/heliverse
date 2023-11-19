@@ -10,5 +10,4 @@ exports.validateCreateUserFields = [
     ...validateString(['first_name', 'last_name', 'gender', 'domain'], false, { min: 1, max: 50 }),
     ...validateEmail(['email']),
     ...validateBooleanOnly(['available']),
-    check('avatar', "Enter a valid image URL").isURL(),
 ];

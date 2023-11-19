@@ -4,13 +4,13 @@ const mongoose = require('mongoose');
 
 // creating schema for users
 const userSchema = new mongoose.Schema({
-    first_name: {
+    firstName: {
         type: String,
         required: true,
         min: [1, 'Name must be atleast 1 characters long'],
         max: [50, 'The name can not be longer than 50 characters.']
     },
-    last_name: {
+    lastName: {
         type: String,
         required: true,
         min: [1, 'Name must be atleast 1 characters long'],
