@@ -1,8 +1,9 @@
 // importing requirements
-const { createUser, updateUser } = require('../controllers/user');
+const { createUser, updateUser, fetchSingleUser, fetchAllUsers } = require('../controllers/user');
 const { uploadImage } = require('../middlewares/handleFile/uploadFiles');
 const { validateValidationResult } = require('../middlewares/validation/validateValidationResults');
 const { validateCreateUserFields, validateUpdateUserFields } = require('../middlewares/validation/validationFields');
+const { validateMongoId } = require('../utility/validateFields/mongoField');
 const router = require('express').Router();
 
 
@@ -13,19 +14,15 @@ router.post('/', uploadImage('avatar'), validateCreateUserFields, validateValida
 router.put('/:id', uploadImage('avatar'), validateUpdateUserFields, validateValidationResult, updateUser);
 
 // Route 3: To fetch details of existing user: '/api/v1/users/id' [using GET] (login not required)
-router.get('/:id', (req, res) => {
-    res.send("get the user")
-});
+router.get('/:id', validateMongoId(['id']), validateValidationResult, fetchSingleUser);
 
 // Route 4: To delete the existing users: '/api/v1/users/id' [using DELETE] (login not required)
 router.delete('/:id', (req, res) => {
-    res.send("delete the user")
+    res.send("delete the user");
 });
 
 // Route 5: To get all the users list: (use pagenation) '/api/v1/users/?page=<number>' [using GET] (login not required)
-router.get('/', (req, res) => {
-    res.send("get all users");
-});
+router.get('/', fetchAllUsers);
 
 // export the router
 module.exports = router;
