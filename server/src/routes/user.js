@@ -1,3 +1,4 @@
+const { createUser } = require('../controllers/user');
 const { validateValidationResult } = require('../middlewares/validateValidationResults');
 const { validateCreateUserFields } = require('../middlewares/validationFields');
 
@@ -6,9 +7,7 @@ const router = require('express').Router();
 
 
 // Route 1: To create a new user: '/api/v1/users/' [using POST] (login not required)
-router.post('/', validateCreateUserFields, validateValidationResult, (req, res) => {
-    res.send("create new user");
-});
+router.post('/', validateCreateUserFields, validateValidationResult, createUser);
 
 // Route 2: To update an existing user: '/api/v1/users/id' [using PUT] (login not required)
 router.put('/:id', (req, res) => {
