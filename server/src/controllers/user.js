@@ -128,6 +128,29 @@ const fetchSingleUser = async (req, res) => {
 
         // send the user as response
         return res.status(200).json({ status: 200, message: "User Found!", user: user });
+
+    } catch (err) {  // unrecogonized errors
+        return res.status(500).json({ status: 500, message: "Internal Server Error!" });
+    }
+};
+
+// to fetch all the user, send per page 20 data
+const fetchAllUsers = async (req, res) => {
+    try {
+        // fetch the page number
+        let page = Number(req.query['page']) || 1;
+        let limit = 20;
+        let skip = (page - 1) * limit;
+
+        // fetch all the user data
+        const user = await User.find();
+        if (user.length === 0) return res.status(200).json({ status: 200, message: "No Users to display!" });
+
+        // fetch the data per page 20 only
+        let data = await User.find().skip(skip).limit(limit);
+
+        // send the user as response
+        return res.status(200).json({ status: 200, message: "User Found!", user: data });
         
     } catch (err) {  // unrecogonized errors
         return res.status(500).json({ status: 500, message: "Internal Server Error!" });
@@ -136,4 +159,4 @@ const fetchSingleUser = async (req, res) => {
 
 
 // export all the controllers method
-module.exports = { createUser, updateUser, fetchSingleUser };
+module.exports = { createUser, updateUser, fetchSingleUser, fetchAllUsers };
