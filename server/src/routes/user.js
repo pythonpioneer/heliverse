@@ -1,10 +1,13 @@
 // importing requirements
+const { createUser } = require('../controllers/user');
+const { uploadImage } = require('../middlewares/handleFile/uploadFiles');
+const { validateValidationResult } = require('../middlewares/validation/validateValidationResults');
+const { validateCreateUserFields } = require('../middlewares/validation/validationFields');
 const router = require('express').Router();
 
+
 // Route 1: To create a new user: '/api/v1/users/' [using POST] (login not required)
-router.post('/', (req, res) => {
-    res.send("create new user");
-});
+router.post('/', uploadImage('avatar'), validateCreateUserFields, validateValidationResult, createUser);
 
 // Route 2: To update an existing user: '/api/v1/users/id' [using PUT] (login not required)
 router.put('/:id', (req, res) => {
