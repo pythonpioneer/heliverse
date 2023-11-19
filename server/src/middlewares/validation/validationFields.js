@@ -1,8 +1,8 @@
 // importing all requirements
 const { check } = require("express-validator");
-const { validateBooleanOnly } = require("../utility/validateFields/booleanField");
-const { validateEmail } = require("../utility/validateFields/emailField");
-const { validateString } = require("../utility/validateFields/stringFields");
+const { validateBooleanOnly } = require("../../utility/validateFields/booleanField");
+const { validateEmail } = require("../../utility/validateFields/emailField");
+const { validateString } = require("../../utility/validateFields/stringFields");
 
 
 // genearating validation array to create a new user
