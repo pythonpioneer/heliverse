@@ -116,6 +116,24 @@ const updateUser = async (req, res) => {
     }
 };
 
+// to fetch the user details by id
+const fetchSingleUser = async (req, res) => {
+    try {
+        // fetch the id from query param
+        const userId = req.params.id;
+
+        // check that the user exists or not
+        const user = await User.findById(userId);
+        if (!user) return res.status(404).json({ status: 404, message: "User not found!!" });
+
+        // send the user as response
+        return res.status(200).json({ status: 200, message: "User Found!", user: user });
+        
+    } catch (err) {  // unrecogonized errors
+        return res.status(500).json({ status: 500, message: "Internal Server Error!" });
+    }
+};
+
 
 // export all the controllers method
-module.exports = { createUser, updateUser };
+module.exports = { createUser, updateUser, fetchSingleUser };
