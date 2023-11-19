@@ -11,3 +11,10 @@ exports.validateCreateUserFields = [
     ...validateEmail(['email']),
     ...validateBooleanOnly(['available']),
 ];
+
+// genearating validation array to update the user
+exports.validateUpdateUserFields = [
+    ...validateString(['first_name', 'last_name', 'gender', 'domain'], true, { min: 1, max: 50 }),
+    ...validateEmail(['email'], true),
+    ...validateBooleanOnly(['available'], true),
+];
