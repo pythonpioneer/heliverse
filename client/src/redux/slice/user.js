@@ -33,11 +33,12 @@ export const createUser = createAsyncThunk('createUser', async (userData) => {
     // now, sent the data to the server
     return axios.post('http://localhost:8000/api/v1/users/', formData)
         .then(response => {
-            console.log(response.data)
+            toast.success(response?.data?.message || "Created!!")
             return response.data;
         })
         .catch(err => {
-            console.errors(err);
+            console.error(err);
+            toast.error(err?.response?.data?.message || "user not created")
             throw err;
         });
 

@@ -2,6 +2,7 @@ import { Grid } from '@mui/material';
 import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createUser } from '../../redux/slice/user';
+import { useNavigate } from 'react-router-dom';
 
 
 // to display the form to create user
@@ -19,22 +20,31 @@ export default function UserForm() {
     // to dispatch the fetch user action
     const dispatch = useDispatch();
 
+    // to navigate to pages
+    const navigate = useNavigate();
+
     // to acces the form data
     const getFormData = (e) => {
         
         // fetching all data from form
         const formData = {
-            firstName: firstName?.current?.value || "no name",
+            firstName: firstName?.current?.value || "No Name",
             lastName: lastName?.current?.value || "",
-            gender: gender?.current?.value || "other",
-            available: available?.current?.checked || 'true',
-            email: email?.current?.value || "noemail@email.com",
+            gender: gender?.current?.value,
+            available: available?.current?.checked,
+            email: email?.current?.value,
             avatar: avatar?.current?.files[0],
-            domain: domain?.current?.value || "IT",
+            domain: domain?.current?.value,
         };
 
         // to create a new user
-        dispatch(createUser(formData));
+        dispatch(createUser(formData))
+            .then(val => {
+                console.log(val)
+                if (val.type === 'createUser/fulfilled')
+                    navigate('/');
+                
+            })
     };
 
     return (
