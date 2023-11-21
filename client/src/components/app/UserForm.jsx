@@ -1,5 +1,7 @@
 import { Grid } from '@mui/material';
 import React, { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { createUser } from '../../redux/slice/user';
 
 
 // to display the form to create user
@@ -12,14 +14,27 @@ export default function UserForm() {
     const email = useRef(null);
     const available = useRef(null);
     const avatar = useRef(null);
+    const domain = useRef(null);
+
+    // to dispatch the fetch user action
+    const dispatch = useDispatch();
 
     // to acces the form data
     const getFormData = (e) => {
-        console.log(email.current.value);
-        console.log(available.current.checked);
-        console.log(gender?.current?.value);
-        console.log(avatar?.current?.files[0]);
+        
+        // fetching all data from form
+        const formData = {
+            firstName: firstName?.current?.value || "no name",
+            lastName: lastName?.current?.value || "",
+            gender: gender?.current?.value || "other",
+            available: available?.current?.checked || 'true',
+            email: email?.current?.value || "no email",
+            avatar: avatar?.current?.files[0],
+            domain: domain?.current?.value || "IT",
+        };
 
+        // to create a new user
+        dispatch(createUser(formData));
     };
 
     return (
@@ -40,7 +55,7 @@ export default function UserForm() {
                         <label>Email</label>
                         <input ref={email} type="email" className="form-control" id="email" placeholder='Email' />
                     </div>
-                    <div className="form-group col-md-6">
+                    <div className="form-group col-md-2">
                         <label>Gender</label>
                         <select ref={gender} id="inputGender" className="form-control">
                             <option disabled>Select Gender</option>
@@ -50,6 +65,10 @@ export default function UserForm() {
                             <option value="Bigender">Bigender</option>
                             <option value="Other">Other</option>
                         </select>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <label>Domain</label>
+                        <input ref={domain} type="text" className="form-control" id="domain" placeholder='Marketing' />
                     </div>
                     <div className="form-group">
                         <label>Avatar</label>

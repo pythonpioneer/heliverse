@@ -149,7 +149,7 @@ const fetchAllUsers = async (req, res) => {
         let data = await User.find().skip(skip).limit(limit);
 
         // send the user as response
-        return res.status(200).json({ status: 200, message: "User Found!", totalResults: data.length, user: data });
+        return res.status(200).json({ status: 200, message: "User Found!", totalResults: data.length, totalUsers: user.length, user: data });
 
     } catch (err) {  // unrecogonized errors
         return res.status(500).json({ status: 500, message: "Internal Server Error!" });
