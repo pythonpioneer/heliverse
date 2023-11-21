@@ -12,7 +12,6 @@ export default function Users() {
   const dispatch = useDispatch();
 
   const state = useSelector(state => state);
-  console.log("users", state);
   const users = state?.user?.data?.user;
   const loading = state?.user?.isLoading;
 
@@ -27,15 +26,15 @@ export default function Users() {
     <>
       <Grid container spacing={4}>
 
+        {/* fetching data from server */}
         { loading && <h1 className='container mt-5'>Loading...</h1>}
 
         {/* traversing to display all users */}
-        { !loading && users?.map((user => {
-            return <Grid item lg={4} xs={12} sm={6} md={4} >
+        { !loading && users?.map((user, index) => {
+          return <Grid key={index} item lg={4} xs={12} sm={6} md={4} >
               <UserItem user={user} />
             </Grid>
-            })
-          )
+        })
         }
       </Grid>
     </>
