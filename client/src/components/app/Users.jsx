@@ -14,6 +14,7 @@ export default function Users() {
   const state = useSelector(state => state.user);
   const users = state?.data?.user;
   const loading = state?.isLoading;
+  console.log(state)
 
   // to fetch users details
   useEffect(() => {

@@ -4,7 +4,24 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 
 
-// creating an action
+// create an action to delete the user
+export const deleteUser = createAsyncThunk('deleteUser', async (userId) => {
+
+    // making api call to delete the user
+    return axios.delete(`http://localhost:8000/api/v1/users/${userId}`)
+        .then(response => {
+            toast.success(response?.data?.message || "Deleted!!")
+            return response.data;
+        })
+        .catch(err => {
+            toast.error(err?.response?.data?.message || "user not deleted")
+            throw err;
+        });
+
+});
+
+
+// creating an action to fetch all users
 export const fetchUsers = createAsyncThunk('fetchUsers', async () => {
 
     // to fetch all the users
@@ -20,7 +37,7 @@ export const fetchUsers = createAsyncThunk('fetchUsers', async () => {
 // Action creator for creating a user
 export const createUser = createAsyncThunk('createUser', async (userData) => {
     const formData = new FormData();
-  
+
     // Append other user data to the formData
     formData.append('first_name', userData.first_name);
     formData.append('last_name', userData.last_name);
@@ -42,7 +59,7 @@ export const createUser = createAsyncThunk('createUser', async (userData) => {
             throw err;
         });
 
-  });
+});
 
 // creating slices
 const userSlice = createSlice({
@@ -54,6 +71,7 @@ const userSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            // to fetch all users
             .addCase(fetchUsers.pending, (state, action) => {
                 state.isLoading = true;
             })
@@ -66,6 +84,8 @@ const userSlice = createSlice({
                 console.log("Error: ", action.payload);
                 state.hasErrors = true;
             })
+
+            // to create all users
             .addCase(createUser.pending, (state) => {
                 state.isLoading = true;
             })
@@ -77,6 +97,26 @@ const userSlice = createSlice({
             })
             .addCase(createUser.rejected, (state, action) => {
                 console.error('Error creating user:', action.error.message);
+                state.isLoading = false;
+                state.hasErrors = true;
+            })
+
+            // to delete all users
+            .addCase(deleteUser.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(deleteUser.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.hasErrors = false;
+
+                // Assuming action.payload contains information about the deleted user
+                const deletedUserId = action.payload.userId;
+
+                // Filter out the deleted user from the data array
+                state.data.user = state.data.user.filter(user => user._id != deletedUserId);
+            })
+            .addCase(deleteUser.rejected, (state, action) => {
+                console.error('Error deleting user:', action.error.message);
                 state.isLoading = false;
                 state.hasErrors = true;
             })
