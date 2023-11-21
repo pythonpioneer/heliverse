@@ -9,9 +9,8 @@ function App() {
   return (
     <>
       <Navbar />
-
       <Routes>
-        <Route exact path='/' element={<Users key={'user-profile'}/>} />
+        <Route exact path='/' element={<Users key={'user-profile'} />} />
         <Route exact path='create-user' element={<UserForm key={'create-user'} />} />
       </Routes>
       
