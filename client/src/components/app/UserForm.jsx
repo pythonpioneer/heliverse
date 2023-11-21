@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material';
 import React, { useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { createUser } from '../../redux/slice/user';
 import { useNavigate } from 'react-router-dom';
 

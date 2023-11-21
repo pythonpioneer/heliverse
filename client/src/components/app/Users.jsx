@@ -11,9 +11,9 @@ export default function Users() {
   // to dispatch the fetch user action
   const dispatch = useDispatch();
 
-  const state = useSelector(state => state);
-  const users = state?.user?.data?.user;
-  const loading = state?.user?.isLoading;
+  const state = useSelector(state => state.user);
+  const users = state?.data?.user;
+  const loading = state?.isLoading;
 
   // to fetch users details
   useEffect(() => {
