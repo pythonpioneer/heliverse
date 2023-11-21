@@ -1,11 +1,20 @@
 // here we will create slices
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 
 // creating an action
 export const fetchUsers = createAsyncThunk('fetchUsers', async () => {
-    const response = await fetch('http://localhost:8000/api/v1/users/');
-    return response.json();
+
+    // to fetch all the users
+    return axios.get('http://localhost:8000/api/v1/users/')
+        .then(response => {
+            return response.data;
+        })
+        .catch(err => {
+            throw err;
+        });
 });
 
 // Action creator for creating a user
@@ -22,12 +31,16 @@ export const createUser = createAsyncThunk('createUser', async (userData) => {
     formData.append('domain', userData.domain);
 
     // now, sent the data to the server
-    const response = await fetch('http://localhost:8000/api/v1/users/', {
-      method: 'POST',
-      body: formData,
-    });
-  
-    return response.json();
+    return axios.post('http://localhost:8000/api/v1/users/', formData)
+        .then(response => {
+            console.log(response.data)
+            return response.data;
+        })
+        .catch(err => {
+            console.errors(err);
+            throw err;
+        });
+
   });
 
 // creating slices

@@ -28,7 +28,7 @@ export default function UserForm() {
             lastName: lastName?.current?.value || "",
             gender: gender?.current?.value || "other",
             available: available?.current?.checked || 'true',
-            email: email?.current?.value || "no email",
+            email: email?.current?.value || "noemail@email.com",
             avatar: avatar?.current?.files[0],
             domain: domain?.current?.value || "IT",
         };
