@@ -28,8 +28,8 @@ export default function UserForm() {
         
         // fetching all data from form
         const formData = {
-            firstName: firstName?.current?.value || "No Name",
-            lastName: lastName?.current?.value || "",
+            firstName: firstName?.current?.value,
+            lastName: lastName?.current?.value,
             gender: gender?.current?.value,
             available: available?.current?.checked,
             email: email?.current?.value,

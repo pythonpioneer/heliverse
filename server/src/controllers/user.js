@@ -28,7 +28,7 @@ const createUser = async (req, res) => {
             avatar: avatar,
         })
             .then(user => {  // user created successfully
-                return res.status(201).json({ status: 201, message: "User Created!!" });
+                return res.status(201).json({ status: 201, message: "User Created!!", user: user });
             })
             .catch(err => {  // error while creating user
                 return res.status(400).json({ status: 400, message: "User does not created, Failed!!" });

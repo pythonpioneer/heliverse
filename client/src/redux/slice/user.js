@@ -39,8 +39,8 @@ export const createUser = createAsyncThunk('createUser', async (userData) => {
     const formData = new FormData();
 
     // Append other user data to the formData
-    formData.append('first_name', userData.first_name);
-    formData.append('last_name', userData.last_name);
+    formData.append('first_name', userData.firstName);
+    formData.append('last_name', userData.lastName);
     formData.append('email', userData.email);
     formData.append('gender', userData.gender);
     formData.append('available', userData.available);  // boolean input
@@ -66,7 +66,8 @@ const userSlice = createSlice({
     name: 'user',
     initialState: {
         isLoading: false,
-        data: null,
+        data: {},  // store all the response data
+        users: [],  // to store all users
         hasErrors: false,
     },
     extraReducers: (builder) => {
@@ -78,22 +79,23 @@ const userSlice = createSlice({
             .addCase(fetchUsers.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.hasErrors = false;
-                state.data = action.payload;
+                state.users = action.payload.user;
             })
             .addCase(fetchUsers.rejected, (state, action) => {
                 console.log("Error: ", action.payload);
                 state.hasErrors = true;
             })
 
-            // to create all users
+            // to create users
             .addCase(createUser.pending, (state) => {
                 state.isLoading = true;
             })
             .addCase(createUser.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.hasErrors = false;
+
                 // You can update the state with the created user data if needed
-                state.data = action.payload;
+                state.users = [action.payload.user, ... state.users];
             })
             .addCase(createUser.rejected, (state, action) => {
                 console.error('Error creating user:', action.error.message);
@@ -113,7 +115,7 @@ const userSlice = createSlice({
                 const deletedUserId = action.payload.userId;
 
                 // Filter out the deleted user from the data array
-                state.data.user = state.data.user.filter(user => user._id != deletedUserId);
+                state.data.user = state.data.user.filter(user => user._id !== deletedUserId);
             })
             .addCase(deleteUser.rejected, (state, action) => {
                 console.error('Error deleting user:', action.error.message);
