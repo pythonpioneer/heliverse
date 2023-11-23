@@ -40,8 +40,8 @@ export default function UserForm() {
         // to create a new user
         dispatch(createUser(formData))
             .then(val => {
-                console.log(val)
-                if (val.type === 'createUser/fulfilled')
+
+                if (val.type === 'createUser/fulfilled')  // user created successfully
                     navigate('/');
                 
             })

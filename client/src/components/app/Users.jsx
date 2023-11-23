@@ -11,9 +11,9 @@ export default function Users() {
   // to dispatch the fetch user action
   const dispatch = useDispatch();
 
-  const state = useSelector(state => state.user);
-  const users = state?.users;
-  const loading = state?.isLoading;
+  // fetching data from store
+  const users = useSelector(state => state.user.users);
+  const loading = useSelector(state => state.user.isLoading)
 
   console.log("users", users)
 
@@ -21,7 +21,7 @@ export default function Users() {
   useEffect(() => {
     dispatch(fetchUsers());
     return (()=> {});  // will write clening function
-  }, []);
+  }, [dispatch]);
 
 
   return (
@@ -36,7 +36,7 @@ export default function Users() {
           return <Grid key={index} item lg={4} xs={12} sm={6} md={4} >
               <UserItem user={user} />
             </Grid>
-        })
+          })
         }
       </Grid>
     </>

@@ -66,7 +66,6 @@ const userSlice = createSlice({
     name: 'user',
     initialState: {
         isLoading: false,
-        data: {},  // store all the response data
         users: [],  // to store all users
         hasErrors: false,
     },
@@ -82,7 +81,7 @@ const userSlice = createSlice({
                 state.users = action.payload.user;
             })
             .addCase(fetchUsers.rejected, (state, action) => {
-                console.log("Error: ", action.payload);
+                console.error("Error: ", action.payload);
                 state.hasErrors = true;
             })
 
@@ -95,7 +94,7 @@ const userSlice = createSlice({
                 state.hasErrors = false;
 
                 // You can update the state with the created user data if needed
-                state.users = [action.payload.user, ... state.users];
+                state.users.push(action.payload.user);
             })
             .addCase(createUser.rejected, (state, action) => {
                 console.error('Error creating user:', action.error.message);
@@ -115,7 +114,7 @@ const userSlice = createSlice({
                 const deletedUserId = action.payload.userId;
 
                 // Filter out the deleted user from the data array
-                state.data.user = state.data.user.filter(user => user._id !== deletedUserId);
+                state.users = state.users.filter(user => user._id !== deletedUserId);
             })
             .addCase(deleteUser.rejected, (state, action) => {
                 console.error('Error deleting user:', action.error.message);
