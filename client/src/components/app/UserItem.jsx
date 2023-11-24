@@ -17,7 +17,7 @@ export default function UserItem(props) {
     return (
         <>
             <Grid container className="container card mt-4" style={{ width: '90%', height: 'auto', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-                <Grid item container alignItems="center">
+                <Grid container alignItems="center">
                     <img className="mr-4" src={props.user.avatar} style={{ height: '50px' }} alt="avatar" />
 
                     <Grid style={{ margin: '5px', paddingRight: '50px' }}>

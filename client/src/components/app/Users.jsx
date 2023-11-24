@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchMoreUsers, fetchUsers } from '../../redux/slice/user';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Spinner from '../spinner/Spinner';
+import SkeletonLoader from '../skeleton/SkeletonLoader';
 
 
 // to display all the users
@@ -26,11 +27,9 @@ export default function Users() {
     console.log("__next__")
   }
 
+  // Fetch users when the component mounts
   useEffect(() => {
-  
-    // Fetch users when the component mounts
     dispatch(fetchUsers());
-    console.log("in effect")
   }, []);
 
 
@@ -38,8 +37,16 @@ export default function Users() {
     <>
       <Grid>
 
-        {/* fetching data from server */}
-        {loading && <h1 className='container mt-5'>Loading...</h1>}
+        {/* while fetching data from server, display skeleton here */}
+        {loading && <Grid container>
+          {Array(15).fill(null).map((element, index) => {
+            return (<Grid item key={index} lg={4} xs={12} sm={6} md={4}>
+              <SkeletonLoader />
+            </Grid>
+            )
+          })}
+        </Grid>
+        }
 
         {/* implementing pagenation */}
         <InfiniteScroll
