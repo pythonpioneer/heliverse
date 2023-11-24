@@ -34,13 +34,26 @@ export const fetchUsers = createAsyncThunk('fetchUsers', async () => {
         });
 });
 
+// creating an action to fetch all users
+export const fetchMoreUsers = createAsyncThunk('fetchMoreUsers', async () => {
+
+    // to fetch all the users
+    return axios.get(`http://localhost:8000/api/v1/users/?page=2`)
+        .then(response => {
+            return response.data;
+        })
+        .catch(err => {
+            throw err;
+        });
+});
+
 // Action creator for creating a user
 export const createUser = createAsyncThunk('createUser', async (userData) => {
     const formData = new FormData();
 
     // Append other user data to the formData
-    formData.append('first_name', userData.first_name);
-    formData.append('last_name', userData.last_name);
+    formData.append('first_name', userData.firstName);
+    formData.append('last_name', userData.lastName);
     formData.append('email', userData.email);
     formData.append('gender', userData.gender);
     formData.append('available', userData.available);  // boolean input
@@ -66,7 +79,8 @@ const userSlice = createSlice({
     name: 'user',
     initialState: {
         isLoading: false,
-        data: null,
+        users: [],  // to store all users
+        totalUsers: 0, 
         hasErrors: false,
     },
     extraReducers: (builder) => {
@@ -78,22 +92,24 @@ const userSlice = createSlice({
             .addCase(fetchUsers.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.hasErrors = false;
-                state.data = action.payload;
+                state.users = action.payload.user;
+                state.totalUsers = action.payload.totalUsers;
             })
             .addCase(fetchUsers.rejected, (state, action) => {
-                console.log("Error: ", action.payload);
+                console.error("Error: ", action.payload);
                 state.hasErrors = true;
             })
 
-            // to create all users
+            // to create users
             .addCase(createUser.pending, (state) => {
                 state.isLoading = true;
             })
             .addCase(createUser.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.hasErrors = false;
+
                 // You can update the state with the created user data if needed
-                state.data = action.payload;
+                state.users.push(action.payload.user);
             })
             .addCase(createUser.rejected, (state, action) => {
                 console.error('Error creating user:', action.error.message);
@@ -113,11 +129,24 @@ const userSlice = createSlice({
                 const deletedUserId = action.payload.userId;
 
                 // Filter out the deleted user from the data array
-                state.data.user = state.data.user.filter(user => user._id != deletedUserId);
+                state.users = state.users.filter(user => user._id !== deletedUserId);
             })
             .addCase(deleteUser.rejected, (state, action) => {
                 console.error('Error deleting user:', action.error.message);
                 state.isLoading = false;
+                state.hasErrors = true;
+            })
+
+            // to fetch more users 
+            .addCase(fetchMoreUsers.pending, (state, action) => {
+                // state.isLoading = true;  // no need to this loading
+                // this case is handled by the infinite scroller loader attribute
+            })
+            .addCase(fetchMoreUsers.fulfilled, (state, action) => {
+                state.users = [...state.users, ...action.payload.user];
+            })
+            .addCase(fetchMoreUsers.rejected, (state, action) => {
+                console.error("Error: ", action.payload);
                 state.hasErrors = true;
             })
     }

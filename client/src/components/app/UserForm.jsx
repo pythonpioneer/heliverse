@@ -28,8 +28,8 @@ export default function UserForm() {
         
         // fetching all data from form
         const formData = {
-            firstName: firstName?.current?.value || "No Name",
-            lastName: lastName?.current?.value || "",
+            firstName: firstName?.current?.value,
+            lastName: lastName?.current?.value,
             gender: gender?.current?.value,
             available: available?.current?.checked,
             email: email?.current?.value,
@@ -40,8 +40,8 @@ export default function UserForm() {
         // to create a new user
         dispatch(createUser(formData))
             .then(val => {
-                console.log(val)
-                if (val.type === 'createUser/fulfilled')
+
+                if (val.type === 'createUser/fulfilled')  // user created successfully
                     navigate('/');
                 
             })
