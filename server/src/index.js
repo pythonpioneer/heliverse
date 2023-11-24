@@ -20,7 +20,6 @@ app.use(cors());
 
 // available routes for API
 app.use(APIPATH + 'users', require('./routes/user.js'));
-app.use(APIPATH + 'filter', require('./routes/filterUser.js'));
 app.use('/avatar', express.static('public/uploads'));  // making images static so that the user can also access
 
 // running the app
