@@ -34,6 +34,19 @@ export const fetchUsers = createAsyncThunk('fetchUsers', async () => {
         });
 });
 
+// creating an action to fetch all users
+export const fetchMoreUsers = createAsyncThunk('fetchMoreUsers', async () => {
+
+    // to fetch all the users
+    return axios.get(`http://localhost:8000/api/v1/users/?page=2`)
+        .then(response => {
+            return response.data;
+        })
+        .catch(err => {
+            throw err;
+        });
+});
+
 // Action creator for creating a user
 export const createUser = createAsyncThunk('createUser', async (userData) => {
     const formData = new FormData();
@@ -67,6 +80,7 @@ const userSlice = createSlice({
     initialState: {
         isLoading: false,
         users: [],  // to store all users
+        totalUsers: 0, 
         hasErrors: false,
     },
     extraReducers: (builder) => {
@@ -79,6 +93,7 @@ const userSlice = createSlice({
                 state.isLoading = false;
                 state.hasErrors = false;
                 state.users = action.payload.user;
+                state.totalUsers = action.payload.totalUsers;
             })
             .addCase(fetchUsers.rejected, (state, action) => {
                 console.error("Error: ", action.payload);
@@ -119,6 +134,21 @@ const userSlice = createSlice({
             .addCase(deleteUser.rejected, (state, action) => {
                 console.error('Error deleting user:', action.error.message);
                 state.isLoading = false;
+                state.hasErrors = true;
+            })
+
+            // to fetch more users 
+            .addCase(fetchMoreUsers.pending, (state, action) => {
+                // state.isLoading = true;
+            })
+            .addCase(fetchMoreUsers.fulfilled, (state, action) => {
+                console.log("state", state.users)
+                state.users = [...state.users, ...action.payload.user];
+                console.log("payload", action.payload.user)
+                
+            })
+            .addCase(fetchMoreUsers.rejected, (state, action) => {
+                console.error("Error: ", action.payload);
                 state.hasErrors = true;
             })
     }
