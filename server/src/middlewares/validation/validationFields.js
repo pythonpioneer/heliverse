@@ -1,5 +1,4 @@
 // importing all requirements
-const { check } = require("express-validator");
 const { validateBooleanOnly } = require("../../utility/validateFields/booleanField");
 const { validateEmail } = require("../../utility/validateFields/emailField");
 const { validateMongoId } = require("../../utility/validateFields/mongoField");

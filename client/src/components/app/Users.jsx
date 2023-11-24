@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import UserItem from './UserItem';
 import { Grid } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,12 +19,14 @@ export default function Users() {
   const users = useSelector(state => state.user.users);
   const loading = useSelector(state => state.user.isLoading);
   const searchText = useSelector(state => state.user.searchText);
+  const [page, setPage] = useState(2);
 
   // to load more data
   const fetchMoreData = () => {
 
     // dispatch the fetch more users action
-    dispatch(fetchMoreUsers());
+    dispatch(fetchMoreUsers(page));
+    setPage(page + 1);
   }
 
   // Fetch users when the component mounts
