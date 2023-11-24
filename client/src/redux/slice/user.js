@@ -139,13 +139,11 @@ const userSlice = createSlice({
 
             // to fetch more users 
             .addCase(fetchMoreUsers.pending, (state, action) => {
-                // state.isLoading = true;
+                // state.isLoading = true;  // no need to this loading
+                // this case is handled by the infinite scroller loader attribute
             })
             .addCase(fetchMoreUsers.fulfilled, (state, action) => {
-                console.log("state", state.users)
                 state.users = [...state.users, ...action.payload.user];
-                console.log("payload", action.payload.user)
-                
             })
             .addCase(fetchMoreUsers.rejected, (state, action) => {
                 console.error("Error: ", action.payload);
