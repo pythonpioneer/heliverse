@@ -155,7 +155,7 @@ const fetchAllUsers = async (req, res) => {
         let data = [];
 
         // only fetch if there is something to search
-        if (!name) {
+        if (name) {
 
             // fetch the data per page 20 only
             data = await User.find({

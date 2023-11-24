@@ -94,7 +94,6 @@ const userSlice = createSlice({
     reducers: {
         setSearchText: (state, action) => {
             state.searchText = action.payload;
-            console.error("err")
         },
         setPage: (state) => {
             state.currPage += 1;
@@ -147,6 +146,7 @@ const userSlice = createSlice({
 
                 // Filter out the deleted user from the data array
                 state.users = state.users.filter(user => user._id !== deletedUserId);
+                state.totalUsers -= 1;
             })
             .addCase(deleteUser.rejected, (state, action) => {
                 console.error('Error deleting user:', action.error.message);
