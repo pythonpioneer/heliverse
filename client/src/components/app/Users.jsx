@@ -17,7 +17,8 @@ export default function Users() {
   // fetching data from store
   const totalUsers = useSelector(state => state.user.totalUsers);
   const users = useSelector(state => state.user.users);
-  const loading = useSelector(state => state.user.isLoading)
+  const loading = useSelector(state => state.user.isLoading);
+  const searchText = useSelector(state => state.user.searchText);
 
   // to load more data
   const fetchMoreData = () => {
@@ -29,8 +30,7 @@ export default function Users() {
   // Fetch users when the component mounts
   useEffect(() => {
     dispatch(fetchUsers());
-    
-  }, []);
+  }, [searchText]);
 
 
   return (

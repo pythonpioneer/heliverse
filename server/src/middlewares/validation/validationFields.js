@@ -22,6 +22,6 @@ exports.validateUpdateUserFields = [
 ];
 
 // generating validation array to validate user's name
-exports.validateName = [
-    ...validateString(['name'], false, { min: 1, max: 50 }),
+exports.validateFetchUsers = [
+    ...validateString(['name'], false, { max: 50 }),
 ];
