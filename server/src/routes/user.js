@@ -2,7 +2,7 @@
 const { createUser, updateUser, fetchSingleUser, fetchAllUsers, deleteUser } = require('../controllers/user');
 const { uploadImage } = require('../middlewares/handleFile/uploadFiles');
 const { validateValidationResult } = require('../middlewares/validation/validateValidationResults');
-const { validateCreateUserFields, validateUpdateUserFields } = require('../middlewares/validation/validationFields');
+const { validateCreateUserFields, validateUpdateUserFields, validateFetchUsers } = require('../middlewares/validation/validationFields');
 const { validateMongoId } = require('../utility/validateFields/mongoField');
 const router = require('express').Router();
 
@@ -20,7 +20,7 @@ router.get('/:id', validateMongoId(['id']), validateValidationResult, fetchSingl
 router.delete('/:id', validateMongoId(['id']), validateValidationResult, deleteUser);
 
 // Route 5: To get all the users list: (use pagenation) '/api/v1/users/?page=<number>' [using GET] (login not required)
-router.get('/', fetchAllUsers);
+router.get('/', validateFetchUsers, validateValidationResult, fetchAllUsers);
 
 
 // export the router

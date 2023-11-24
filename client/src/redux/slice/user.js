@@ -22,10 +22,12 @@ export const deleteUser = createAsyncThunk('deleteUser', async (userId) => {
 
 
 // creating an action to fetch all users
-export const fetchUsers = createAsyncThunk('fetchUsers', async () => {
+export const fetchUsers = createAsyncThunk('fetchUsers', async (_, { getState }) => {
+
+    const searchText = getState().user.searchText;
 
     // to fetch all the users
-    return axios.get('http://localhost:8000/api/v1/users/')
+    return axios.get(`http://localhost:8000/api/v1/users/?name=${searchText}`)
         .then(response => {
             return response.data;
         })
@@ -35,10 +37,12 @@ export const fetchUsers = createAsyncThunk('fetchUsers', async () => {
 });
 
 // creating an action to fetch all users
-export const fetchMoreUsers = createAsyncThunk('fetchMoreUsers', async () => {
+export const fetchMoreUsers = createAsyncThunk('fetchMoreUsers', async (_, { getState }) => {
+
+    const searchText = getState().user.searchText;
 
     // to fetch all the users
-    return axios.get(`http://localhost:8000/api/v1/users/?page=2`)
+    return axios.get(`http://localhost:8000/api/v1/users/?name=${searchText}`)
         .then(response => {
             return response.data;
         })
@@ -81,7 +85,17 @@ const userSlice = createSlice({
         isLoading: false,
         users: [],  // to store all users
         totalUsers: 0, 
+        searchText: '',
         hasErrors: false,
+    },
+    reducers: {
+        setSearchText: (state, action) => {
+            console.log("acion", action)
+            state.searchText = action.payload;
+        },
+        clearSearchText: (state) => {
+            state.searchText = '';
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -153,4 +167,5 @@ const userSlice = createSlice({
 });
 
 // exporting the slice
+export const { setSearchText, clearSearchText } = userSlice.actions;
 export default userSlice.reducer;
