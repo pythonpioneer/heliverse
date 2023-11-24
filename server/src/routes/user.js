@@ -22,5 +22,6 @@ router.delete('/:id', validateMongoId(['id']), validateValidationResult, deleteU
 // Route 5: To get all the users list: (use pagenation) '/api/v1/users/?page=<number>' [using GET] (login not required)
 router.get('/', fetchAllUsers);
 
+
 // export the router
 module.exports = router;
