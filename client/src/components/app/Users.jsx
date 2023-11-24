@@ -24,12 +24,12 @@ export default function Users() {
 
     // dispatch the fetch more users action
     dispatch(fetchMoreUsers());
-    console.log("__next__")
   }
 
   // Fetch users when the component mounts
   useEffect(() => {
     dispatch(fetchUsers());
+    
   }, []);
 
 

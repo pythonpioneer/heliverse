@@ -81,7 +81,16 @@ const userSlice = createSlice({
         isLoading: false,
         users: [],  // to store all users
         totalUsers: 0, 
+        searchText: '',
         hasErrors: false,
+    },
+    reducers: {
+        setSearchText: (state, action) => {
+            state.searchText = action.payload;
+        },
+        clearSearchText: (state) => {
+            state.searchText = '';
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -153,4 +162,5 @@ const userSlice = createSlice({
 });
 
 // exporting the slice
+export const { setSearchText, clearSearchText } = userSlice.actions;
 export default userSlice.reducer;
