@@ -20,3 +20,8 @@ exports.validateUpdateUserFields = [
     ...validateEmail(['email'], true),
     ...validateBooleanOnly(['available'], true),
 ];
+
+// generating validation array to validate user's name
+exports.validateName = [
+    ...validateString(['name'], false, { min: 1, max: 50 }),
+];
