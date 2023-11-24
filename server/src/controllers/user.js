@@ -141,17 +141,35 @@ const fetchAllUsers = async (req, res) => {
         let limit = 20;
         let skip = (page - 1) * limit;
 
+        // fetch the user's name from query param
+        const { name } = req.query;
+
+        // Use a regular expression for case-insensitive partial matching
+        const regex = new RegExp(name, 'i');
+
         // fetch all the user data
-        const user = await User.find();
-        if (user.length === 0) return res.status(200).json({ status: 200, message: "No Users to display!" });
+        const users = await User.find();
+        if (users.length === 0) return res.status(200).json({ status: 200, message: "No Users to display!" });
 
         // fetch the data per page 20 only
-        let data = await User.find().skip(skip).limit(limit);
+        const data = await User.find({
+            $or: [
+                { first_name: { $regex: regex } },
+                { last_name: { $regex: regex } }
+            ]
+        }).skip(skip).limit(limit);
 
         // send the user as response
-        return res.status(200).json({ status: 200, message: "User Found!", totalResults: data.length, totalUsers: user.length, user: data });
+        return res.status(200).json({
+            status: 200,
+            message: "User Found!",
+            totalResults: data.length,
+            totalUsers: users.length,
+            user: data
+        });
 
     } catch (err) {  // unrecogonized errors
+        console.error(err);
         return res.status(500).json({ status: 500, message: "Internal Server Error!" });
     }
 };
