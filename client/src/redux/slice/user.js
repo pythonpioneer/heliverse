@@ -2,6 +2,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
 
 
 // create an action to delete the user
@@ -37,12 +38,13 @@ export const fetchUsers = createAsyncThunk('fetchUsers', async (_, { getState })
 });
 
 // creating an action to fetch all users
-export const fetchMoreUsers = createAsyncThunk('fetchMoreUsers', async (_, { getState }) => {
+export const fetchMoreUsers = createAsyncThunk('fetchMoreUsers', async (page, { getState }) => {
 
     const searchText = getState().user.searchText;
+    const currPage = getState().user.currPage;
 
     // to fetch all the users
-    return axios.get(`http://localhost:8000/api/v1/users/?name=${searchText}`)
+    return axios.get(`http://localhost:8000/api/v1/users/?name=${searchText}&page=${page}`)
         .then(response => {
             return response.data;
         })
@@ -87,14 +89,14 @@ const userSlice = createSlice({
         totalUsers: 0, 
         searchText: '',
         hasErrors: false,
+        currPage: 2,
     },
     reducers: {
         setSearchText: (state, action) => {
-            console.log("acion", action)
             state.searchText = action.payload;
         },
-        clearSearchText: (state) => {
-            state.searchText = '';
+        setPage: (state) => {
+            state.currPage += 1;
         },
     },
     extraReducers: (builder) => {
@@ -144,6 +146,7 @@ const userSlice = createSlice({
 
                 // Filter out the deleted user from the data array
                 state.users = state.users.filter(user => user._id !== deletedUserId);
+                state.totalUsers -= 1;
             })
             .addCase(deleteUser.rejected, (state, action) => {
                 console.error('Error deleting user:', action.error.message);
@@ -167,5 +170,5 @@ const userSlice = createSlice({
 });
 
 // exporting the slice
-export const { setSearchText, clearSearchText } = userSlice.actions;
+export const { setSearchText, clearSearchText, setPage } = userSlice.actions;
 export default userSlice.reducer;

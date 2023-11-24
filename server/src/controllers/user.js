@@ -19,8 +19,8 @@ const createUser = async (req, res) => {
 
         // now, create the user
         User.create({
-            firstName: first_name,
-            lastName: last_name,
+            first_name: first_name,
+            last_name: last_name,
             email: email,
             gender: gender,
             domain: domain,
@@ -60,11 +60,11 @@ const updateUser = async (req, res) => {
         // find the fields to be updated
         if (first_name) {
             toBeUpdated = true;
-            updatedUser.firstName = first_name;
+            updatedUser.first_name = first_name;
         }
         if (last_name) {
             toBeUpdated = true;
-            updatedUser.lastName = last_name;
+            updatedUser.last_name = last_name;
         }
         if (email) {
             toBeUpdated = true;
@@ -151,13 +151,23 @@ const fetchAllUsers = async (req, res) => {
         const users = await User.find();
         if (users.length === 0) return res.status(200).json({ status: 200, message: "No Users to display!" });
 
-        // fetch the data per page 20 only
-        const data = await User.find({
-            $or: [
-                { first_name: { $regex: regex } },
-                { last_name: { $regex: regex } }
-            ]
-        }).skip(skip).limit(limit);
+        // to store users data page wise
+        let data = [];
+
+        // only fetch if there is something to search
+        if (name) {
+
+            // fetch the data per page 20 only
+            data = await User.find({
+                $or: [
+                    { first_name: { $regex: regex } },
+                    { last_name: { $regex: regex } }
+                ]
+            }).skip(skip).limit(limit);
+        }
+        else {  // fetch data per page 20
+            data = await User.find().skip(skip).limit(limit);
+        }
 
         // send the user as response
         return res.status(200).json({
