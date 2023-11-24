@@ -4,6 +4,7 @@ import { Grid } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMoreUsers, fetchUsers } from '../../redux/slice/user';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import Spinner from '../spinner/Spinner';
 
 
 // to display all the users
@@ -19,12 +20,10 @@ export default function Users() {
 
   // to load more data
   const fetchMoreData = () => {
-    const currentScrollPosition = window.scrollY;
 
     // dispatch the fetch more users action
     dispatch(fetchMoreUsers());
     console.log("__next__")
-    window.scrollTo(0, currentScrollPosition);
   }
 
   useEffect(() => {
@@ -47,7 +46,7 @@ export default function Users() {
           dataLength={users.length}
           next={fetchMoreData}
           hasMore={users.length < totalUsers}  // there are alot of articles present, restricting after displaying some articles out of those
-          loader={<h2>loasdfsadfas</h2>}
+          loader={<Spinner />}
         >
           <Grid container>
 
