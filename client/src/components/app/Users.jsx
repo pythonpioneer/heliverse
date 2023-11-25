@@ -34,6 +34,9 @@ export default function Users() {
   // Fetch users when the component mounts
   useEffect(() => {
     dispatch(fetchUsers());
+    
+    // if there is noting to search then set the page as initial page
+    if (searchText.length === 0) setPage(2);
   }, [searchText]);
 
 
