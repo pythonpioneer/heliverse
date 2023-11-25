@@ -52,12 +52,13 @@ export default function Users() {
         </Grid>
         }
 
-        {/* implementing pagenation */}
-        <InfiniteScroll
+        {users.length === 0 ? <h2 className='container mt-5' style={{ justifyContent: 'center' }}>No Users Found</h2>
+
+        :<InfiniteScroll
           dataLength={users.length}
           next={fetchMoreData}
           hasMore={users.length < totalUsers}  // there are alot of articles present, restricting after displaying some articles out of those
-          loader={<Spinner />}
+          loader={(users.length % 20 === 0) && <Spinner />}
         >
           <Grid container>
           {console.log(users?.length, totalUsers)}
@@ -71,6 +72,7 @@ export default function Users() {
 
           </Grid>
         </InfiniteScroll>
+        }
       </Grid>
     </>
   )
