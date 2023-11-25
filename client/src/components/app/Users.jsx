@@ -25,8 +25,10 @@ export default function Users() {
   const fetchMoreData = () => {
 
     // dispatch the fetch more users action
-    dispatch(fetchMoreUsers(page));
-    setPage(page + 1);
+    if (users.length < totalUsers) {
+      dispatch(fetchMoreUsers(page));
+      setPage(page + 1);
+    }
   }
 
   // Fetch users when the component mounts
@@ -58,6 +60,7 @@ export default function Users() {
           loader={<Spinner />}
         >
           <Grid container>
+          {console.log(users?.length, totalUsers)}
 
             {/* traversing to display all users */}
             {!loading && users?.map((user, index) => {

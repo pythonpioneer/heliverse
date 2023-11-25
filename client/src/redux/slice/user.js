@@ -145,8 +145,8 @@ const userSlice = createSlice({
                 const deletedUserId = action.payload.userId;
 
                 // Filter out the deleted user from the data array
+                state.totalUsers -= 2;
                 state.users = state.users.filter(user => user._id !== deletedUserId);
-                state.totalUsers -= 1;
             })
             .addCase(deleteUser.rejected, (state, action) => {
                 console.error('Error deleting user:', action.error.message);
