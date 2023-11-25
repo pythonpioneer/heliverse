@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setSearchText } from '../../redux/slice/user';
+import { setCurrPage, setSearchText } from '../../redux/slice/user';
 
 
 // to display the navigation bar
@@ -14,6 +14,7 @@ export default function Navbar() {
   // to fetch the search text from the input field and store it in search text state
   const getSearchText = () => {
     dispatch(setSearchText(searchTextRef.current.value));
+    dispatch(setCurrPage(2));  // because the first page fetched by the fetchUsers
   };
 
 

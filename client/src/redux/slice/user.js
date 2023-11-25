@@ -44,7 +44,7 @@ export const fetchMoreUsers = createAsyncThunk('fetchMoreUsers', async (page, { 
     const currPage = getState().user.currPage;
 
     // to fetch all the users
-    return axios.get(`http://localhost:8000/api/v1/users/?name=${searchText}&page=${page}`)
+    return axios.get(`http://localhost:8000/api/v1/users/?name=${searchText}&page=${currPage}`)
         .then(response => {
             return response.data;
         })
@@ -95,8 +95,8 @@ const userSlice = createSlice({
         setSearchText: (state, action) => {
             state.searchText = action.payload;
         },
-        setPage: (state) => {
-            state.currPage += 1;
+        setCurrPage: (state, action) => {
+            state.currPage = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -170,5 +170,5 @@ const userSlice = createSlice({
 });
 
 // exporting the slice
-export const { setSearchText, clearSearchText, setPage } = userSlice.actions;
+export const { setSearchText, clearSearchText, setCurrPage } = userSlice.actions;
 export default userSlice.reducer;
