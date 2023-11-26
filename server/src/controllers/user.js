@@ -142,7 +142,7 @@ const fetchAllUsers = async (req, res) => {
         let skip = (page - 1) * limit;
 
         // fetch the user's name from query param
-        const { name } = req.query;
+        const { name, gender, available, domain } = req.query;
 
         // Use a regular expression for case-insensitive partial matching
         const regex = new RegExp(name, 'i');
@@ -151,23 +151,36 @@ const fetchAllUsers = async (req, res) => {
         const users = await User.find();
         if (users.length === 0) return res.status(200).json({ status: 200, message: "No Users to display!" });
 
-        // to store users data page wise
-        let data = [];
+        // to implement search and filter
+        let searchQuery = {}; 
+        let filterQuery = {};
 
-        // only fetch if there is something to search
-        if (name) {
+        // now serach for the users
+        if (name) searchQuery = {
+            $or: [
+                { first_name: { $regex: regex } },
+                { last_name: { $regex: regex } },
+            ],
+        };
 
-            // fetch the data per page 20 only
-            data = await User.find({
-                $or: [
-                    { first_name: { $regex: regex } },
-                    { last_name: { $regex: regex } }
-                ]
-            }).skip(skip).limit(limit);
+        // now, filter the data
+        if (gender) filterQuery.gender = gender;
+        if (domain) filterQuery.domain = domain;
+        if (available.length !== 0) {  // there is something in available
+
+            // now, validate that available containse boolean values
+            if (available === 'false' || available === 'true') filterQuery.available = available;
+            else return res.status(400).json({ status: 400, message: 'Invalid query!!', info: 'Available takes boolen parameters.' });
         }
-        else {  // fetch data per page 20
-            data = await User.find().skip(skip).limit(limit);
+
+        // queries for mongoDB to fetch users 
+        const mongoQuery = {
+            ...searchQuery,
+            ...filterQuery,
         }
+
+        // to store users data page wise;
+        const data = await User.find(mongoQuery).skip(skip).limit(limit);
 
         // send the user as response
         return res.status(200).json({

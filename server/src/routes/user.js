@@ -19,7 +19,7 @@ router.get('/:id', validateMongoId(['id']), validateValidationResult, fetchSingl
 // Route 4: To delete the existing users: '/api/v1/users/id' [using DELETE] (login not required)
 router.delete('/:id', validateMongoId(['id']), validateValidationResult, deleteUser);
 
-// Route 5: To get all the users list: (use pagenation) '/api/v1/users/?page=<number>' [using GET] (login not required)
+// Route 5: To get all the users list: (use pagenation) '/api/v1/users/?page=<number>&name=<string>&gender=<string>&domain=<string>&available=<boolean-string>' [using GET] (login not required)
 router.get('/', validateFetchUsers, validateValidationResult, fetchAllUsers);
 
 
