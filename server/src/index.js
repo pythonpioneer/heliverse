@@ -3,7 +3,7 @@ const connectToMongo = require("./connectionDB/db");
 const dotenv = require('dotenv').config();
 const express = require('express');
 const cors = require("cors");
-const { port, apiPath, domain } = require("./constants");
+const { port, apiPath, hostDomain } = require("./constants");
 
 
 // connecting to database
@@ -24,5 +24,5 @@ app.use('/avatar', express.static('public/uploads'));  // making images static s
 
 // running the app
 app.listen(PORT, () => {
-    console.log(`App listening on port ${domain}:${PORT}`);
+    console.log(`App listening on port ${hostDomain}${PORT}`);
 });
