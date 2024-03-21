@@ -58,8 +58,8 @@ export const createUser = createAsyncThunk('createUser', async (userData) => {
     const formData = new FormData();
 
     // Append other user data to the formData
-    formData.append('first_name', userData.firstName);
-    formData.append('last_name', userData.lastName);
+    formData.append('first_name', userData.first_name);
+    formData.append('last_name', userData.last_name);
     formData.append('email', userData.email);
     formData.append('gender', userData.gender);
     formData.append('available', userData.available);  // boolean input
